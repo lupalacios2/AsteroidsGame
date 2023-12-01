@@ -29,8 +29,8 @@ class Asteroid extends Floater {
     myCenterX = Math.random() * 256;
     myCenterY = Math.random() * 256;
 
-    myXspeed = 1;
-    myYspeed = 1;
+    myXspeed = Math.random() * 2 - 1;
+    myYspeed = Math.random() * 2 - 1;
     
     if (Math.random() > 0.5) {
       rotationSpeed = -1;
@@ -38,7 +38,7 @@ class Asteroid extends Floater {
       rotationSpeed = 1;
     }
 
-    myPointDirection = 0;
+    myPointDirection = Math.random() * 361;
   }
   
   public float getY() {
