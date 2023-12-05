@@ -1,7 +1,9 @@
 private Spaceship bob = new Spaceship();
 private Star[] bobby =  new Star[150];
 private ArrayList <Asteroid> asteroids = new ArrayList <Asteroid> ();
-private boolean[] keys = new boolean[4]; // a, w, d, s
+private ArrayList <Bullet> shots = new ArrayList <Bullet> ();
+private boolean[] keys = new boolean[5]; // a, w, d, s, space
+private int frameDiff = 0;
 
 public void setup() {
   size(500, 500);
@@ -17,6 +19,8 @@ public void setup() {
 
 public void draw() {
   background(0);
+  frameDiff++;
+  System.out.println(frameDiff);
 
   for (int i = 0; i < bobby.length; i++) {
     bobby[i].show();
@@ -26,9 +30,23 @@ public void draw() {
     asteroids.get(j).move();
     asteroids.get(j).show();
     
-    double d = dist(bob.getX(), bob.getY(), asteroids.get(j).getX(), asteroids.get(j).getY());  
+    double d = dist((float) bob.getX(), (float) bob.getY(), (float) asteroids.get(j).getX(), (float) asteroids.get(j).getY());  
     if (d < 35) {
       asteroids.remove(j);
+    }
+  }
+  
+  for (int k = 0; k < shots.size(); k++) {
+    shots.get(k).move();
+    shots.get(k).show();
+    
+    for (int l = 0; l < asteroids.size(); l++) {
+      double d = dist((float) shots.get(k).getX(), (float) shots.get(k).getY(), (float) asteroids.get(l).getX(), (float) asteroids.get(l).getY());  
+       if (d < 35) {
+        asteroids.remove(l);
+        shots.remove(k);
+        break;
+      }
     }
   }
 
@@ -46,6 +64,11 @@ public void draw() {
   
   if (keys[3]) {
     bob.brake();
+  }
+  
+  if (keys[4] && frameDiff > 15) {
+    frameDiff = 0;
+    shots.add(new Bullet(bob));
   }
   
   bob.move();
@@ -68,8 +91,12 @@ public void keyPressed() {
   if (key == 's' || keyCode == DOWN) {
     keys[3] = true;
   }
-
+  
   if (key == ' ') {
+    keys[4] = true;
+  }
+
+  if (keyCode == SHIFT) {
     bob.hyperspace();
   }
 }
@@ -89,5 +116,9 @@ public void keyReleased() {
   
   if (key == 's' || keyCode == DOWN) {
     keys[3] = false;
+  }
+  
+  if (key == ' ') {
+    keys[4] = false;
   }
 }
