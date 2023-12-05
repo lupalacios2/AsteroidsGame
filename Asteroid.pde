@@ -41,12 +41,12 @@ class Asteroid extends Floater {
     myPointDirection = Math.random() * 361;
   }
   
-  public float getY() {
-    return (float) myCenterY;
+  public double getY() {
+    return myCenterY;
   }
   
-  public float getX() {
-    return (float) myCenterX;
+  public double getX() {
+    return myCenterX;
   }
   
   public void move() {
