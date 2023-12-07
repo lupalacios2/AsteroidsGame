@@ -23,7 +23,12 @@ class Asteroid extends Floater {
     yCorners[7] = 8;
     xCorners[8] = -8;
     yCorners[8] = 16;
-
+    
+    for (int i = 0; i < corners; i++) {
+      xCorners[i] += randomize();
+      yCorners[i] += randomize();
+    }
+    
     myColor = color(128, 128, 128); 
 
     myCenterX = Math.random() * 256;
@@ -39,6 +44,10 @@ class Asteroid extends Floater {
     }
 
     myPointDirection = Math.random() * 361;
+  }
+  
+  private int randomize() {
+    return (int)(Math.random() * 10) - 5;
   }
   
   public double getY() {
