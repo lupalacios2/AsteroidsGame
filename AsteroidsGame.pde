@@ -1,9 +1,33 @@
 private Spaceship bob = new Spaceship();
-private Star[] bobby =  new Star[150];
+private Star[] bobby =  new Star[100];
 private ArrayList <Asteroid> asteroids = new ArrayList <Asteroid> ();
 private ArrayList <Bullet> shots = new ArrayList <Bullet> ();
 private boolean[] keys = new boolean[5]; // a, w, d, s, space
-private int frameDiff = 0;
+private int asteroidDiff = 0;
+private int bulletDiff = 0;
+private int points = 0;
+
+private void reset() {
+  background(0);
+  
+  bob = new Spaceship();
+  bobby =  new Star[100];
+  
+  asteroids = new ArrayList <Asteroid> ();
+  shots = new ArrayList <Bullet> ();
+
+  for (int i = 0; i < bobby.length; i++) {
+    bobby[i] = new Star();
+  }
+  
+  for (int j = 0; j < 10; j++) {
+    asteroids.add(new Asteroid());
+  }
+  
+  asteroidDiff = 0;
+  bulletDiff = 0;
+  points = 0;
+}
 
 public void setup() {
   size(500, 500);
@@ -12,17 +36,23 @@ public void setup() {
     bobby[i] = new Star();
   }
   
-  for (int j = 0; j < 5; j++) {
+  for (int j = 0; j < 10; j++) {
     asteroids.add(new Asteroid());
   }
 }
 
 public void draw() {
   background(0);
-  frameDiff++;
+  bulletDiff++;
+  asteroidDiff++;
 
   for (int i = 0; i < bobby.length; i++) {
     bobby[i].show();
+  }
+
+  if ((asteroids.size() < 10 && asteroidDiff > 90) || (asteroids.size() < 5 && asteroidDiff > 30)) {
+    asteroidDiff = 0;
+    asteroids.add(new Asteroid());
   }
   
   for (int j = 0; j < asteroids.size(); j++) {
@@ -31,7 +61,7 @@ public void draw() {
     
     double d = dist((float) bob.getX(), (float) bob.getY(), (float) asteroids.get(j).getX(), (float) asteroids.get(j).getY());  
     if (d < 35) {
-      asteroids.remove(j);
+      reset();
     }
   }
   
@@ -44,6 +74,7 @@ public void draw() {
        if (d < 35) {
         asteroids.remove(l);
         shots.remove(k);
+        points += 100;
         break;
       }
     }
@@ -65,13 +96,17 @@ public void draw() {
     bob.brake();
   }
   
-  if (keys[4] && frameDiff > 15) {
-    frameDiff = 0;
+  if (keys[4] && bulletDiff > 20) {
+    bulletDiff = 0;
     shots.add(new Bullet(bob));
   }
   
   bob.move();
   bob.show();
+  
+  textSize(25);
+  fill(255);
+  text("Score: " + points, 20, 40);
 }
 
 public void keyPressed() {
