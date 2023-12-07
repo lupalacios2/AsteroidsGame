@@ -20,7 +20,6 @@ public void setup() {
 public void draw() {
   background(0);
   frameDiff++;
-  System.out.println(frameDiff);
 
   for (int i = 0; i < bobby.length; i++) {
     bobby[i].show();
